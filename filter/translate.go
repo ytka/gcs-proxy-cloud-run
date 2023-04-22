@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+//	https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +22,7 @@ import (
 	"strings"
 
 	translate "cloud.google.com/go/translate/apiv3"
-	"github.com/DomZippilli/gcs-proxy-cloud-function/common"
+	"github.com/ytka/gcs-proxy-cloud-run/common"
 	"golang.org/x/text/language"
 	translatepb "google.golang.org/genproto/googleapis/cloud/translate/v3"
 )
@@ -46,9 +46,10 @@ func setup(ctx context.Context, handle MediaFilterHandle) error {
 // translation, leaving only ctx and handle for use as a MediaFilter.
 //
 // For example:
-//   func(ctx context.Context, handle MediaFilterHandle) error {
-//   	return Translate(ctx, handle, language.English, language.Spanish, translate.HTML)
-//   },
+//
+//	func(ctx context.Context, handle MediaFilterHandle) error {
+//		return Translate(ctx, handle, language.English, language.Spanish, translate.HTML)
+//	},
 //
 // This is an example of a store-and-forward filter, in that it loads the
 // entire response to perform its transformation, so it will use memory at least

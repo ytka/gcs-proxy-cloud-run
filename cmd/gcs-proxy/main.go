@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+//	https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/DomZippilli/gcs-proxy-cloud-function/config"
 	"github.com/rs/zerolog/log"
+	"github.com/ytka/gcs-proxy-cloud-run/config"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
