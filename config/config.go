@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/ytka/gcs-proxy-cloud-run/backends/gcs"
 	"github.com/ytka/gcs-proxy-cloud-run/backends/proxy"
@@ -36,13 +37,28 @@ func Setup() (*token.TokenClient, error) {
 
 // GET will be called in main.go for GET requests
 func GET(ctx context.Context, output http.ResponseWriter, input *http.Request, tokenClient *token.TokenClient) {
+	reqToken := input.Header.Get("Authorization")
+	splitToken := strings.Split(reqToken, "Bearer ")
+	if len(splitToken) != 2 {
+		http.Error(output, "token not found", http.StatusUnauthorized)
+		return
+	}
+	reqToken = splitToken[1]
+
 	bucket, objectName := common.NormalizePath(input.URL.Path)
 	tk, err := tokenClient.GetToken(ctx, bucket, objectName)
 	if err != nil {
-		// TODO: treat 404
-		http.Error(output, "can't get token: "+err.Error(), http.StatusInternalServerError)
+		if err == token.TokenErrorNotFound {
+			http.Error(output, "token not found: "+err.Error(), http.StatusNotFound)
+		} else {
+			http.Error(output, "can't get token: "+err.Error(), http.StatusInternalServerError)
+		}
 	}
-	fmt.Println(tk)
+	//fmt.Println(tk)
+	if tk != reqToken {
+		http.Error(output, "token mismatch", http.StatusUnauthorized)
+		return
+	}
 	gcs.Read(ctx, output, input, LoggingOnly)
 	//gcs.ReadWithCache(ctx, output, input, CacheMedia, cacheGetter, LoggingOnly)
 }

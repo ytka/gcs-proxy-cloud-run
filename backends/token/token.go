@@ -11,6 +11,8 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+var TokenErrorNotFound = fmt.Errorf("token does not found")
+
 type TokenClient struct {
 	redisClient *redis.Client
 }
@@ -37,7 +39,7 @@ func (t *TokenClient) GetToken(ctx context.Context, bucket, objectName string) (
 	key := key(bucket, objectName)
 	tk, err := t.redisClient.Get(ctx, key).Result()
 	if err == redis.Nil {
-		return "", fmt.Errorf("key does not exist")
+		return "", TokenErrorNotFound
 	} else if err != nil {
 		return "", err
 	}
