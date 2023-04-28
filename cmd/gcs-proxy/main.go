@@ -19,10 +19,13 @@ import (
 	"os"
 
 	"github.com/rs/zerolog/log"
+	"github.com/ytka/gcs-proxy-cloud-run/backends/token"
 	"github.com/ytka/gcs-proxy-cloud-run/config"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
+
+var tokenClient *token.TokenClient
 
 func main() {
 	// initialize
@@ -37,9 +40,11 @@ func main() {
 	}
 
 	// Initialize
-	if err := config.Setup(); err != nil {
+	tc, err := config.Setup()
+	if err != nil {
 		log.Fatal().Msgf("main setup: %v", err)
 	}
+	tokenClient = tc
 
 	// Start HTTP server.
 	log.Printf("listening on port %s", port)
@@ -56,11 +61,13 @@ func ProxyHTTPGCS(output http.ResponseWriter, input *http.Request) {
 	// route HTTP methods to appropriate handlers.
 	switch input.Method {
 	case http.MethodGet:
-		config.GET(ctx, output, input)
+		config.GET(ctx, output, input, tokenClient)
 	case http.MethodHead:
 		config.HEAD(ctx, output, input)
 	case http.MethodOptions:
 		config.OPTIONS(ctx, output, input)
+	case http.MethodPost:
+		config.POST(ctx, output, input, tokenClient)
 	default:
 		http.Error(output, "405 - Method Not Allowed", http.StatusMethodNotAllowed)
 	}

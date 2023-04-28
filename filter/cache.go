@@ -14,22 +14,14 @@
 package filter
 
 import (
-	"bytes"
-	"context"
-	"fmt"
-	"io"
-	"strconv"
-	"strings"
 	"time"
-
-	"github.com/rs/zerolog/log"
-	"github.com/ytka/gcs-proxy-cloud-run/common"
 )
 
 type CacheSet func(string, []byte, time.Duration)
 
 // FillCache will tee the media it recieves into a cache, using the normalized
 // request URL as the key. Supply a cache setter with the setter argument.
+/*
 func FillCache(ctx context.Context, handle MediaFilterHandle, setter CacheSet) error {
 	defer handle.input.Close()
 	defer handle.output.Close()
@@ -58,3 +50,4 @@ func FillCache(ctx context.Context, handle MediaFilterHandle, setter CacheSet) e
 	setter(cacheKey, cachedMedia.Bytes(), cacheExpiration)
 	return nil
 }
+*/

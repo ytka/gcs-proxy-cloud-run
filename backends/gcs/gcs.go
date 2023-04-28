@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+//	https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,18 +15,17 @@ package gcs
 
 import (
 	"context"
-	"os"
 
 	storage "cloud.google.com/go/storage"
 )
 
-var bucket string
+// var bucket string
 var gcs *storage.Client
 
 // setup performs one-time setup for the GCS backend.
 func Setup() error {
 	// set the bucket name from environment variable
-	bucket = os.Getenv("BUCKET_NAME")
+	//bucket = os.Getenv("BUCKET_NAME")
 
 	// initialize the client
 	var err error

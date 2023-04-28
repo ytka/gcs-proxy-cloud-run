@@ -15,15 +15,9 @@ package config
 
 import (
 	"context"
-	"net/http"
 	"regexp"
-	"strings"
-	"time"
 
-	gocache "github.com/patrickmn/go-cache"
-	"github.com/ytka/gcs-proxy-cloud-run/common"
 	"github.com/ytka/gcs-proxy-cloud-run/filter"
-	"golang.org/x/text/language"
 )
 
 // DEFAULT: A proxy that simply logs requests.
@@ -40,6 +34,7 @@ var LowercasingProxy = filter.Pipeline{
 	filter.LogRequest,
 }
 
+/*
 // EXAMPLE: Send everything compressed.
 var ZippingProxy = filter.Pipeline{
 	filter.GZip,
@@ -57,6 +52,7 @@ var DynamicTranslationFromEnToEs = filter.Pipeline{
 func htmlEnglishToSpanish(c context.Context, mfh filter.MediaFilterHandle) error {
 	return filter.FilterIf(c, mfh, isHTML, englishToSpanish)
 }
+
 
 // englishToSpanish is MediaFilter that translates media from English to Spanish,
 // using the MIME type of the source in the call to Translate API. This uses
@@ -76,6 +72,7 @@ var BlockSSNs = filter.Pipeline{
 	blockSSNs,
 	filter.LogRequest,
 }
+*/
 
 // BlockSSNs will block content that matches SSN regex.
 func blockSSNs(c context.Context, mfh filter.MediaFilterHandle) error {
@@ -86,6 +83,7 @@ func blockSSNs(c context.Context, mfh filter.MediaFilterHandle) error {
 	return filter.BlockRegex(c, mfh, regexes)
 }
 
+/*
 // EXAMPLE: Cache media in the proxy's memory.
 var CacheMedia = filter.Pipeline{
 	cacheMedia,
@@ -115,3 +113,4 @@ func cacheGetter(k string) ([]byte, bool) {
 func cacheMedia(c context.Context, mfh filter.MediaFilterHandle) error {
 	return filter.FillCache(c, mfh, cacheSetter)
 }
+*/
