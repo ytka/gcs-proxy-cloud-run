@@ -26,6 +26,7 @@ func NewClient() (*TokenClient, error) {
 	return &TokenClient{redis.NewClient(opt)}, nil
 }
 
+// TODO: support multiple token for one object
 func (t *TokenClient) CreateToken(ctx context.Context, bucket, objectName string) (string, error) {
 	token := generateSecureToken(32)
 	key := key(bucket, objectName)
